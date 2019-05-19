@@ -1,6 +1,13 @@
 name: yingzhi
+
+languag: en
+# Support language: de, en, fr-FR, id, ja, ko, pt-BR, pt, ru, zh-Hans, zh-hk, zh-tw
+date_format: '%Y-%m-%d'
+
 markdown: kramdown
 permalink: /blog/:year/:month/:day/:title
+
+paginate: 10
 
 plugins:
   - jekyll-sitemap
