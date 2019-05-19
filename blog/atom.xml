@@ -4,13 +4,13 @@ layout: feed
 <?xml version="1.0" encoding="utf-8"?>
 <feed xmlns="http://www.w3.org/2005/Atom">
 
-	<title>Hank Quinlan's Blog</title>
+	<title>yingzgigi</title>
 	<link href="http://yingzgigi.github.io/blog/atom.xml" rel="self"/>
 	<link href="http://yingzgigi.github.io/blog"/>
 	<updated>{{ site.time | date_to_xmlschema }}</updated>
 	<id>http://yingzgigi.github.io/blog</id>
 	<author>
-		<name>Yingzhi</name>
+		<name>Yingzgigi</name>
 		<email>zhangyingzhianja@gmail.com</email>
 	</author>
 
