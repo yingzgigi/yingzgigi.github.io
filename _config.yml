@@ -1,13 +1,12 @@
 name: yingzhi
+title: weekly review
 
 languag: en
 # Support language: de, en, fr-FR, id, ja, ko, pt-BR, pt, ru, zh-Hans, zh-hk, zh-tw
 date_format: '%Y-%m-%d'
 
-markdown: kramdown
-kramdown:
-    input: GFM
-permalink: /blog/:year/:month/:day/:title
+
+permalink: pretty
 
 paginate: 10
 
@@ -16,6 +15,10 @@ exclude: [".rvmrc", ".rbenv-version", "README.md", "Rakefile", "changelog.md", "
 highlighter: rouge
 highlight:
   line_number: true
+
+markdown: kramdown
+kramdown:
+    input: GFM
 
 defaults:
   -
@@ -36,6 +39,12 @@ plugins:
   - jekyll-feed
 
 favicon: /assets/favicon.ico
+
+# ---------------------------------------------------------------
+# Jekyll & Global Configuration
+## Docs: https://jekyllrb.com/docs/configuration/
+# ---------------------------------------------------------------
+
 
 # Set rss to false to disable feed link.
 # Leave rss as empty to use site's feed link.
@@ -183,6 +192,9 @@ social_icons:
   # Icon Mappings.
   # KeyMapsToSocialItemKey: NameOfTheIconFromFontAwesome
   GitHub: github
+  Twitter: twitter
+  Weibo: weibo
+
 
 # Sidebar Avatar
 # in directory: /assets/images/avatar.gif
@@ -285,6 +297,8 @@ post_copyright:
   enable: false
   license: CC BY-NC-SA 3.0
   license_url: https://creativecommons.org/licenses/by-nc-sa/3.0/
+
+
 
 # ---------------------------------------------------------------
 # Misc Theme Settings
