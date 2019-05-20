@@ -1,5 +1,7 @@
-name: yingzhi
+
 title: weekly review
+
+author: yingzgigi
 
 languag: en
 # Support language: de, en, fr-FR, id, ja, ko, pt-BR, pt, ru, zh-Hans, zh-hk, zh-tw
@@ -198,7 +200,7 @@ social_icons:
 
 # Sidebar Avatar
 # in directory: /assets/images/avatar.gif
-#avatar:
+avatar: /assets/images/avatar_01.png
 
 
 # Table Of Contents in the Sidebar
