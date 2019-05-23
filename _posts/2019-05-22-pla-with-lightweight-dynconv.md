@@ -9,7 +9,7 @@ date: 2019-05-16
 
 
     * Transformer
-![Transformer](postsimage\transformer.png){:height="10" width="10"}
+![Transformer](https://github.com/yingzgigi/yingzgigi.github.io/blob/master/_posts/postsimage/transformer.png){:height="10" width="10"}
     * Self Attention
 
     * Lightweight Convolution
