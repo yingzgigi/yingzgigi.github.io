@@ -9,7 +9,10 @@ date: 2019-05-16
 
 
     * Transformer
-![Transformer](https://github.com/yingzgigi/yingzgigi.github.io/blob/master/_posts/postsimage/transformer.png){:height="10" width="10"}
+
+        <img src="https://github.com/yingzgigi/yingzgigi.github.io/blob/master/_posts/postsimage/transformer.png" alt="Transformer" title="Transformer" width="50" height="50" />
+
+        Transformer可以用来解决自然语言不定长问题，跟CNN类似，设定输入的最大长度，用Padding填充不够的部分，使模型输入定长。
     * Self Attention
 
     * Lightweight Convolution
