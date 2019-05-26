@@ -10,33 +10,31 @@ date: 2019-05-16
 
 2. 运行XLaunch
    
-    ** bash中运行texmaker就可以在VcXsrv中打开界面码字了。**
+    **bash中运行texmaker就可以在VcXsrv中打开界面码字了**
 
 
-然后关于不是很需要的Unity桌面：
+_然后关于不是很需要的Unity桌面：_
 
 3. bash输入：
-```
-   sudo apt-get install ubuntu-desktop unity compizconfig-settings-manager
-```
+    ```
+    sudo apt-get install ubuntu-desktop unity compizconfig-settings-manager
+    ```
 
-打开ccsm
+    打开ccsm
 
-```
+    ```
     ccsm
-```
+    ```
 
-然后再VcXsrv Server勾选需要的模块，close。
+    然后再VcXsrv Server勾选需要的模块，close。
 
-```
+    ```
     echo "export DISPLAY=:0.0" >> ~/.bashrc
     sudo sed -i 's$<listen>.*</listen>$<listen>tcp:host=localhost,port=0</listen>$' /etc/dbus-1/session.conf
+    ```
 
-```
+    启动Unity桌面
 
-启动Unity桌面
-
-```
+    ```
     compiz
-
-```
+    ```
