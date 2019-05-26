@@ -11,11 +11,13 @@ date: 2019-05-16
 ```
    sudo apt-get install ubuntu-desktop unity compizconfig-settings-manager
 ```
+
 打开ccsm
-```
-ccsm
 
 ```
+ccsm
+```
+
 然后再VcXsrv Server勾选需要的模块，close。
 bash中运行texmaker就可以在VcXsrv中打开界面码字。
 
