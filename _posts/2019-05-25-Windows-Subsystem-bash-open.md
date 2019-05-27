@@ -2,6 +2,8 @@
 layout: post
 title: "Windows的Linux子系统：bash打开application的图形界面"
 date: 2019-05-16
+category: 记录
+tag: linux
 ---
 
 因为想要用linux环境下的LaTex，所以需要texmaker的图形界面。在没有配置前的ubuntu子系统只有terminal。然后整理了一下步骤：
