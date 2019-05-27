@@ -3,7 +3,7 @@ layout: post
 title: "从语音到文本的end-to-end翻译"
 date: 2019-05-27
 category: 论文notes
-tag: machine translation; speech translation
+tag: speech translation
 ---
 
 ## [LISTEN AND TRANSLATE: A PROOF OF CONCEPT FOR END-TO-END SPEECH-TO-TEXT TRANSLATION] ##
