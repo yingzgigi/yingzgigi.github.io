@@ -3,7 +3,7 @@ layout: post
 title: "从语音到文本的end-to-end翻译"
 date: 2019-05-27
 category: 论文notes
-tag: speech translation
+tags: [speech translation, NMT]
 ---
 
 ## [LISTEN AND TRANSLATE: A PROOF OF CONCEPT FOR END-TO-END SPEECH-TO-TEXT TRANSLATION] ##
@@ -14,10 +14,14 @@ tag: speech translation
 
 这篇论文首次尝试建立一个end-to-end speech-to-text translation system，并且在学习或者解码过程中不使用源语言文本。减少对源语言转录的需求可以改变语言翻译时的数据收集方式，从收集speech transcription变成双语者看到目标语言文本的表达然后直接以源语言说话。
 
-#### Model
+### Model
 
-#### Experiments
 
-#### Conclusion
+
+### Experiments
+
+
+
+### Conclusion
 
 这篇论文提出的end-to-end语音翻译模型的结果建立在小型法-英合成语料库。其后续工作是对non-synthetic data做评估分析。

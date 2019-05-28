@@ -3,7 +3,7 @@ layout: post
 title: "关于light weight和dynamic convolution"
 date: 2019-05-16
 category: 论文notes
-tag: machine translation
+tags: [NMT]
 ---
 * [PAY LESS ATTENTION WITH LIGHTWEIGHT AND DYNAMIC CONVOLUTGIONS]
 
