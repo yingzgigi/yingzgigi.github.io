@@ -8,6 +8,8 @@ tags: [speech translation, NMT]
 
 ## [LISTEN AND TRANSLATE: A PROOF OF CONCEPT FOR END-TO-END SPEECH-TO-TEXT TRANSLATION] 2016 ##
 
+>End-to-end speech translation. Def. : the direct translation of an audio signal without intermediate transcription steps.
+
 现在的语音翻译系统整合使用两个主要模型：source language speech recognition（ASR）和 source-to-target text （MT）。在这些方法里，源语言的text transcript（sequence或者graph）用于生成目标语言的text hypothesis。
 
 当时的“encoder-decoder”结构是一种把输入信号的序列投射到连续的低维空间里并且从而生成输出序列。如果不考虑从源语音序列直接翻译到目标词序列或者从平行phone-word序列发现双语语料库，那么从源语音信号到目标语言文本的直接翻译的唯一尝试是Duong的源语音发音和它们的文本翻译之间的校准，以及Anastasopoulos提出用IBM Model 2和dynamic time warping(DTW)来校准源语音和目标文本，但当时Duong及另一论文都没有提出完整的end-to-end翻译系统。
@@ -49,7 +51,7 @@ $$u_i^t = v^T tanh(W_1 h_i + W_2 s_t + b_2)$$
 
 ### Experiments
 
-他们生成了一种有语音合成的语音翻译语料库，使用小规模平行语料库French-English BTEC corpus。
+他们生成了一种有语音合成的语音翻译语料库，使用小型平行语料库French-English BTEC corpus。因为这两个语种有相似的语序（SVO-SVO主动宾）。
 
 ![Results of machine translation experiments](\assets\images\postsimage\0528\results_text_translation)
 
@@ -59,4 +61,4 @@ $$u_i^t = v^T tanh(W_1 h_i + W_2 s_t + b_2)$$
 
 ### Conclusion
 
-这篇论文提出的end-to-end语音翻译模型的结果建立在小型法-英合成语料库。其后续工作是对non-synthetic data做评估分析。
+这篇论文提出的end-to-end语音翻译模型的结果建立在小型法-英合成语料库，首次证明了在不使用源语言的情况下进行端到端语音到文本翻译的可能性。
