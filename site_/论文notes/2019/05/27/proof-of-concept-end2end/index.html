@@ -1,0 +1,888 @@
+
+<!doctype html>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<html class="theme-next muse use-motion" lang="">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+
+
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/assets/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+  
+  
+  
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+    
+    
+    <link href="//fonts.googleapis.com/css?family=Lato:300,300italic,400,400italic,700,700italic&subset=latin,latin-ext" rel="stylesheet" type="text/css">
+  
+
+
+
+
+
+
+<link href="/assets/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css" />
+
+<link href="/assets/css/main.css?v=5.1.1" rel="stylesheet" type="text/css" />
+
+
+  <meta name="keywords" content="speech translation,NMT," />
+
+
+
+
+
+  <link rel="alternate" href="/atom.xml" title="weekly review" type="application/atom+xml" />
+
+
+
+
+  <link rel="shortcut icon" type="image/x-icon" href="/assets/favicon.ico?v=5.1.1" />
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<meta name="description" content="[LISTEN AND TRANSLATE: A PROOF OF CONCEPT FOR END-TO-END SPEECH-TO-TEXT TRANSLATION] 2016 End-to-end speech translation. Def. : the direct translation of an audio signal without intermediate transcription steps. 现在的语音翻译系统整合使用两个主要模型：source language speech recognition（ASR）和 source-to-target text （MT）。在这些方法里，源语言的text transcript（sequence或者graph）用于生成目标语言的text hypothesis。 当时的“encoder-decoder”结构是一种把输入信号的序列投射到连续的低维空间里并且从而生成输出序列。如果不考虑从源语音序列直接翻译到目标词序列或者从平行phone-word序列发现双语语料库，那么从源语音信号到目标语言文本的直接翻译的唯一尝试是Duong的源语音发音和它们的文本翻译之间的校准，以及Anastasopoulos提出用IBM Model 2和dynamic time warping(DTW)来校准源语音和目标文本，但当时Duong及另一论文都没有提出完整的end-to-end翻译系统。 这篇论文首次尝试建立一个end-to-end speech-to-text translation system，并且在学习或者解码过程中不使用源语言文本。减少对源语言转录的需求可以改变语言翻译时的数据收集方式，从收集speech transcription变成双语者看到目标语言文本的表达然后直接以源语言说话。 Model 比较两个end-to-end模型：标准机器翻译和语音翻译（都使用了attention-based encoder-decoder神经网络）。 输入序列(), 多层双向的LSTM的encoder生成输出序列h=(). decoder初始状态, 是encoder最后一个状态。decoder的下一个状态是 是LSTM的新状态，是输出。在训练时，是目标序列reference中的前一个标记；评估时，是前一个time-step的预测标记。E是目标嵌入矩阵。 与LSTM的输出级联的attention vector this vector is mapped to a vector of the same size as the target vocabulary, to compute a probability distribution over all target words 每个time-step greedy decoder（每次只选最可能的那一个词）选取概率最大时的。 在文本输入时用了注意力机制（attention mechanism） 为了能在语音输入时让attention model记住并且不重复翻译同一部分信号，用了卷积注意力模型（convolutional attention），用convolutional filter来记录前一个time-step的attention weights。这个对于输入语音序列特别长的时候特别有用。 Experiments 他们生成了一种有语音合成的语音翻译语料库，使用小型平行语料库French-English BTEC corpus。因为这两个语种有相似的语序（SVO-SVO主动宾）。 语音文本转换模型比机器翻译模型表现差一点。 Conclusion 这篇论文提出的end-to-end语音翻译模型的结果建立在小型法-英合成语料库，首次证明了在不使用源语言的情况下进行端到端语音到文本翻译的可能性。">
+<meta name="keywords" content="speech translation, NMT">
+<meta property="og:type" content="article">
+<meta property="og:title" content="从语音到文本的end-to-end翻译">
+<meta property="og:url" content="http://localhost:4000/%E8%AE%BA%E6%96%87notes/2019/05/27/proof-of-concept-end2end/">
+<meta property="og:site_name" content="weekly review">
+<meta property="og:description" content="[LISTEN AND TRANSLATE: A PROOF OF CONCEPT FOR END-TO-END SPEECH-TO-TEXT TRANSLATION] 2016 End-to-end speech translation. Def. : the direct translation of an audio signal without intermediate transcription steps. 现在的语音翻译系统整合使用两个主要模型：source language speech recognition（ASR）和 source-to-target text （MT）。在这些方法里，源语言的text transcript（sequence或者graph）用于生成目标语言的text hypothesis。 当时的“encoder-decoder”结构是一种把输入信号的序列投射到连续的低维空间里并且从而生成输出序列。如果不考虑从源语音序列直接翻译到目标词序列或者从平行phone-word序列发现双语语料库，那么从源语音信号到目标语言文本的直接翻译的唯一尝试是Duong的源语音发音和它们的文本翻译之间的校准，以及Anastasopoulos提出用IBM Model 2和dynamic time warping(DTW)来校准源语音和目标文本，但当时Duong及另一论文都没有提出完整的end-to-end翻译系统。 这篇论文首次尝试建立一个end-to-end speech-to-text translation system，并且在学习或者解码过程中不使用源语言文本。减少对源语言转录的需求可以改变语言翻译时的数据收集方式，从收集speech transcription变成双语者看到目标语言文本的表达然后直接以源语言说话。 Model 比较两个end-to-end模型：标准机器翻译和语音翻译（都使用了attention-based encoder-decoder神经网络）。 输入序列(), 多层双向的LSTM的encoder生成输出序列h=(). decoder初始状态, 是encoder最后一个状态。decoder的下一个状态是 是LSTM的新状态，是输出。在训练时，是目标序列reference中的前一个标记；评估时，是前一个time-step的预测标记。E是目标嵌入矩阵。 与LSTM的输出级联的attention vector this vector is mapped to a vector of the same size as the target vocabulary, to compute a probability distribution over all target words 每个time-step greedy decoder（每次只选最可能的那一个词）选取概率最大时的。 在文本输入时用了注意力机制（attention mechanism） 为了能在语音输入时让attention model记住并且不重复翻译同一部分信号，用了卷积注意力模型（convolutional attention），用convolutional filter来记录前一个time-step的attention weights。这个对于输入语音序列特别长的时候特别有用。 Experiments 他们生成了一种有语音合成的语音翻译语料库，使用小型平行语料库French-English BTEC corpus。因为这两个语种有相似的语序（SVO-SVO主动宾）。 语音文本转换模型比机器翻译模型表现差一点。 Conclusion 这篇论文提出的end-to-end语音翻译模型的结果建立在小型法-英合成语料库，首次证明了在不使用源语言的情况下进行端到端语音到文本翻译的可能性。">
+<meta property="og:image" content="\\assets\\images\\postsimage\\0528\\alignments_performance.jpg">
+<meta property="og:image" content="\\assets\\images\\postsimage\\0528\\results_text_translation.jpg">
+<meta property="og:image" content="\\assets\\images\\postsimage\\0528\\results_speech_translation.jpg">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="从语音到文本的end-to-end翻译">
+<meta name="twitter:description" content="[LISTEN AND TRANSLATE: A PROOF OF CONCEPT FOR END-TO-END SPEECH-TO-TEXT TRANSLATION] 2016 End-to-end speech translation. Def. : the direct translation of an audio signal without intermediate transcription steps. 现在的语音翻译系统整合使用两个主要模型：source language speech recognition（ASR）和 source-to-target text （MT）。在这些方法里，源语言的text transcript（sequence或者graph）用于生成目标语言的text hypothesis。 当时的“encoder-decoder”结构是一种把输入信号的序列投射到连续的低维空间里并且从而生成输出序列。如果不考虑从源语音序列直接翻译到目标词序列或者从平行phone-word序列发现双语语料库，那么从源语音信号到目标语言文本的直接翻译的唯一尝试是Duong的源语音发音和它们的文本翻译之间的校准，以及Anastasopoulos提出用IBM Model 2和dynamic time warping(DTW)来校准源语音和目标文本，但当时Duong及另一论文都没有提出完整的end-to-end翻译系统。 这篇论文首次尝试建立一个end-to-end speech-to-text translation system，并且在学习或者解码过程中不使用源语言文本。减少对源语言转录的需求可以改变语言翻译时的数据收集方式，从收集speech transcription变成双语者看到目标语言文本的表达然后直接以源语言说话。 Model 比较两个end-to-end模型：标准机器翻译和语音翻译（都使用了attention-based encoder-decoder神经网络）。 输入序列(), 多层双向的LSTM的encoder生成输出序列h=(). decoder初始状态, 是encoder最后一个状态。decoder的下一个状态是 是LSTM的新状态，是输出。在训练时，是目标序列reference中的前一个标记；评估时，是前一个time-step的预测标记。E是目标嵌入矩阵。 与LSTM的输出级联的attention vector this vector is mapped to a vector of the same size as the target vocabulary, to compute a probability distribution over all target words 每个time-step greedy decoder（每次只选最可能的那一个词）选取概率最大时的。 在文本输入时用了注意力机制（attention mechanism） 为了能在语音输入时让attention model记住并且不重复翻译同一部分信号，用了卷积注意力模型（convolutional attention），用convolutional filter来记录前一个time-step的attention weights。这个对于输入语音序列特别长的时候特别有用。 Experiments 他们生成了一种有语音合成的语音翻译语料库，使用小型平行语料库French-English BTEC corpus。因为这两个语种有相似的语序（SVO-SVO主动宾）。 语音文本转换模型比机器翻译模型表现差一点。 Conclusion 这篇论文提出的end-to-end语音翻译模型的结果建立在小型法-英合成语料库，首次证明了在不使用源语言的情况下进行端到端语音到文本翻译的可能性。">
+<meta name="twitter:image" content="\\assets\\images\\postsimage\\0528\\alignments_performance.jpg">
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '',
+    scheme: 'Muse',
+    sidebar: {"position":"left","display":"post","offset":12,"offset_float":0,"b2t":false,"scrollpercent":false},
+    fancybox: true,
+    motion: true,
+    duoshuo: {
+      userId: '0',
+      author: ''
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="http://localhost:4000/"/>
+
+
+
+
+
+  <title>从语音到文本的end-to-end翻译 | weekly review</title>
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="">
+
+  
+  
+
+  <div class="container sidebar-position-left page-post-detail ">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"> <div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/"  class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">weekly review</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle"></p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+            
+            
+          </a>
+        </li>
+      
+        
+        
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
+            
+            
+          </a>
+        </li>
+      
+        
+        
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br />
+            
+            
+          </a>
+        </li>
+      
+
+      
+    </ul>
+  
+
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+<div id="posts" class="posts-expand">
+  
+  
+
+  
+
+  
+  
+  
+
+  <article class="post post-type- " itemscope itemtype="http://schema.org/Article">
+    <link itemprop="mainEntityOfPage" href="http://localhost:4000/%E8%AE%BA%E6%96%87notes/2019/05/27/proof-of-concept-end2end/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="yingzgigi">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/assets/images/avatar_01.png">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="weekly review">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+          
+          
+            从语音到文本的end-to-end翻译
+          
+        </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text"></span>
+              
+              <time title="" itemprop="dateCreated datePublished" datetime="2019-05-27T00:00:00+02:00">
+                2019-05-27
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text"></span>
+              
+              
+                
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/category/#/%E8%AE%BA%E6%96%87notes" itemprop="url" rel="index">
+                    <span itemprop="name">论文notes</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+
+          
+          
+
+          
+
+          
+
+          
+            
+                <div class="post-description">
+                    
+                </div>
+            
+          
+
+        </div>
+      </header>
+    
+
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+  
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  <h2 id="listen-and-translate-a-proof-of-concept-for-end-to-end-speech-to-text-translation-2016">[LISTEN AND TRANSLATE: A PROOF OF CONCEPT FOR END-TO-END SPEECH-TO-TEXT TRANSLATION] 2016</h2>
+
+<blockquote>
+  <p>End-to-end speech translation. Def. : the direct translation of an audio signal without intermediate transcription steps.</p>
+</blockquote>
+
+<p>现在的语音翻译系统整合使用两个主要模型：source language speech recognition（ASR）和 source-to-target text （MT）。在这些方法里，源语言的text transcript（sequence或者graph）用于生成目标语言的text hypothesis。</p>
+
+<p>当时的“encoder-decoder”结构是一种把输入信号的序列投射到连续的低维空间里并且从而生成输出序列。如果不考虑从源语音序列直接翻译到目标词序列或者从平行phone-word序列发现双语语料库，那么从源语音信号到目标语言文本的直接翻译的唯一尝试是Duong的源语音发音和它们的文本翻译之间的校准，以及Anastasopoulos提出用IBM Model 2和dynamic time warping(DTW)来校准源语音和目标文本，但当时Duong及另一论文都没有提出完整的end-to-end翻译系统。</p>
+
+<p>这篇论文首次尝试建立一个end-to-end speech-to-text translation system，并且在学习或者解码过程中不使用源语言文本。减少对源语言转录的需求可以改变语言翻译时的数据收集方式，从收集speech transcription变成双语者看到目标语言文本的表达然后直接以源语言说话。</p>
+
+<h3 id="model">Model</h3>
+
+<p>比较两个end-to-end模型：标准机器翻译和语音翻译（都使用了attention-based encoder-decoder神经网络）。</p>
+
+<p>输入序列(<script type="math/tex">x_1, ..., x_A</script>), 多层双向的LSTM的encoder生成输出序列h=(<script type="math/tex">h_1, ..., h_A</script>). decoder初始状态<script type="math/tex">s_0 = tanh(W_{init} s^{'}_A)</script>, <script type="math/tex">s^{'}_A</script>是encoder最后一个状态。decoder的下一个状态是</p>
+
+<script type="math/tex; mode=display">s_t, o_t = LSTM(s_{t-1}, E_{z_{t-1}})</script>
+
+<p><script type="math/tex">s_t</script>是LSTM的新状态，<script type="math/tex">o_t</script>是输出。在训练时，<script type="math/tex">z_{t-1}</script>是目标序列reference中的前一个标记；评估时，<script type="math/tex">z_{t-1}</script>是前一个time-step的预测标记。E是目标嵌入矩阵。</p>
+
+<p>与LSTM的输出<script type="math/tex">o_t</script>级联的attention vector <script type="math/tex">d_t</script></p>
+
+<script type="math/tex; mode=display">d_t = attention(h, s_t)</script>
+
+<p>this vector is mapped to a vector of the same size as the target vocabulary,</p>
+
+<script type="math/tex; mode=display">y_t = W_{proj}(o_t \bigoplus d_t) + b_{proj}</script>
+
+<p>to compute a probability distribution over all target words</p>
+
+<script type="math/tex; mode=display">p(w_t|y_{t-1}, s_{t-1}) = softmax(W_{out} y_t + b_{out})</script>
+
+<p>每个time-step greedy decoder（每次只选最可能的那一个词）选取概率最大时的<script type="math/tex">w_t</script>。</p>
+
+<p>在文本输入时用了注意力机制（attention mechanism）
+<script type="math/tex">attention(h, s_t) = \sum{a_i^t h_i}</script>
+<script type="math/tex">a_i^t = softmax(u_i^t)</script>
+<script type="math/tex">u_i^t = v^T tanh(W_1 h_i + W_2 s_t + b_2)</script></p>
+
+<p><img src="\assets\images\postsimage\0528\alignments_performance.jpg" alt="example of alignment performed by the attention mechanism during training" /></p>
+
+<p>为了能在语音输入时让attention model记住并且不重复翻译同一部分信号，用了卷积注意力模型（convolutional attention），用convolutional filter来记录前一个time-step的attention weights。这个对于输入语音序列特别长的时候特别有用。</p>
+
+<h3 id="experiments">Experiments</h3>
+
+<p>他们生成了一种有语音合成的语音翻译语料库，使用小型平行语料库French-English BTEC corpus。因为这两个语种有相似的语序（SVO-SVO主动宾）。</p>
+
+<p><img src="\assets\images\postsimage\0528\results_text_translation.jpg" alt="Results of machine translation experiments" /></p>
+
+<p><img src="\assets\images\postsimage\0528\results_speech_translation.jpg" alt="Results of speech translation experiments" /></p>
+
+<p>语音文本转换模型比机器翻译模型表现差一点。</p>
+
+<h3 id="conclusion">Conclusion</h3>
+
+<p>这篇论文提出的end-to-end语音翻译模型的结果建立在小型法-英合成语料库，首次证明了在不使用源语言的情况下进行端到端语音到文本翻译的可能性。</p>
+
+
+      
+    </div>
+
+    <div>
+      
+        
+
+      
+    </div>
+
+    <div>
+      
+        
+
+      
+    </div>
+
+    <div>
+      
+        
+
+      
+    </div>
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            
+            <a href="/tag/#/speech%20translation" rel="tag"># speech translation</a>
+          
+            
+            <a href="/tag/#/NMT" rel="tag"># NMT</a>
+          
+        </div>
+      
+
+      
+      
+      
+      
+      
+
+      
+      
+        <div class="post-nav" id="post-nav-id">
+          <div class="post-nav-next post-nav-item">
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/%E8%AE%B0%E5%BD%95/2019/05/16/Windows-Subsystem-bash-open/" rel="prev" title="Windows的Linux子系统：bash打开application的图形界面">
+                Windows的Linux子系统：bash打开application的图形界面 <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+      
+
+      
+    </footer>
+  </article>
+
+  <div class="post-spread">
+    
+  </div>
+</div>
+
+
+          </div>
+          
+
+
+          
+
+        </div>
+        
+          
+
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    <div class="sidebar-inner">
+
+      
+        
+        
+        
+
+
+
+
+
+
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap" >
+            
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview">
+            
+          </li>
+        </ul>
+      
+
+      <section class="site-overview sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+          <img class="site-author-image" itemprop="image"
+               src="/assets/images/avatar_01.png"
+               alt="yingzgigi" />
+          <p class="site-author-name" itemprop="name">yingzgigi</p>
+           
+              <p class="site-description motion-element" itemprop="description">github pages</p>
+          
+        </div>
+        <nav class="site-state motion-element">
+
+          
+            <div class="site-state-item site-state-posts">
+              <a href="/archives/">
+                <span class="site-state-item-count">4</span>
+                <span class="site-state-item-name"></span>
+              </a>
+            </div>
+          
+
+          
+            
+            
+            <div class="site-state-item site-state-categories">
+              <a href="/categories/">
+                <span class="site-state-item-count">2</span>
+                <span class="site-state-item-name"></span>
+              </a>
+            </div>
+          
+
+          
+            
+            
+            <div class="site-state-item site-state-tags">
+              <a href="/tags/">
+                <span class="site-state-item-count">3</span>
+                <span class="site-state-item-name"></span>
+              </a>
+            </div>
+          
+
+        </nav>
+
+        
+        
+        
+          <div class="feed-link motion-element">
+            <a href="/atom.xml" rel="alternate">
+              <i class="fa fa-rss"></i>
+              RSS
+            </a>
+          </div>
+        
+
+        <div class="links-of-author motion-element">
+          
+        </div>
+
+        
+        
+
+        
+        
+
+        
+
+
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+            
+            
+            
+
+
+
+
+
+
+
+
+            
+              <div class="post-toc-content">
+    <ol class=nav>
+      <li class="nav-item nav-level-2"> <a class="nav-link" href="#listen-and-translate-a-proof-of-concept-for-end-to-end-speech-to-text-translation-2016"> <span class="nav-number">1</span> <span class="nav-text">[LISTEN AND TRANSLATE: A PROOF OF CONCEPT FOR END-TO-END SPEECH-TO-TEXT TRANSLATION] 2016</span> </a> <ol class="nav-child"> <li class="nav-item nav-level-3"> <a class="nav-link" href="#model"> <span class="nav-number">1.1</span> <span class="nav-text">Model</span> </a> </li> <li class="nav-item nav-level-3"> <a class="nav-link" href="#experiments"> <span class="nav-number">1.2</span> <span class="nav-text">Experiments</span> </a> </li> <li class="nav-item nav-level-3"> <a class="nav-link" href="#conclusion"> <span class="nav-number">1.3</span> <span class="nav-text">Conclusion</span> </a> </li> </ol> </li>
+    </ol>
+  </div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright" >
+  
+  
+  &copy; 
+  <span itemprop="copyrightYear">2019</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">yingzgigi</span>
+</div>
+
+
+<div class="powered-by">
+  
+</div>
+
+<div class="theme-info">
+   -
+  <a class="theme-link" href="https://github.com/simpleyyt/jekyll-theme-next">
+    NexT.Muse
+  </a>
+</div>
+
+
+        
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+   
+  
+  
+  
+  
+  
+  <script type="text/javascript" src="/assets/lib/jquery/index.js?v=2.1.3"></script>
+
+  
+  
+  
+  
+  
+  <script type="text/javascript" src="/assets/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+
+  
+  
+  
+  
+  
+  <script type="text/javascript" src="/assets/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+
+  
+  
+  
+  
+  
+  <script type="text/javascript" src="/assets/lib/velocity/velocity.min.js?v=1.2.1"></script>
+
+  
+  
+  
+  
+  
+  <script type="text/javascript" src="/assets/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+
+  
+  
+  
+  
+  
+  <script type="text/javascript" src="/assets/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+
+
+  
+
+
+  <script type="text/javascript" src="/assets/js/src/utils.js?v=5.1.1"></script>
+
+  <script type="text/javascript" src="/assets/js/src/motion.js?v=5.1.1"></script>
+
+
+
+  
+  
+
+  <script type="text/javascript" src="/assets/js/src/scrollspy.js?v=5.1.1"></script>
+<script type="text/javascript" src="/assets/js/src/post-details.js?v=5.1.1"></script>
+
+
+  
+
+
+  <script type="text/javascript" src="/assets/js/src/bootstrap.js?v=5.1.1"></script>
+
+
+
+  
+
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+  
+
+    
+
+  
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+  
+
+  
+
+  
+  
+
+
+  
+
+  
+
+  
+
+</body>
+</html>
+

@@ -42,6 +42,8 @@ plugins:
 
 favicon: /assets/favicon.ico
 
+keywords: "Jekyll, NexT"
+
 # ---------------------------------------------------------------
 # Jekyll & Global Configuration
 ## Docs: https://jekyllrb.com/docs/configuration/
@@ -85,7 +87,7 @@ index_with_subtitle: false
 # When running the site in a subdirectory (e.g. domain.tld/blog), remove the leading slash (/archives -> archives)
 menu:
   home: /
-  #categories: /categories/
+  categories: /categories/
   #about: /about/
   archives: /archives/
   tags: /tags/
@@ -211,7 +213,7 @@ toc:
   number: true
 
   # If true, all words will placed on next lines if header width longer then sidebar width.
-  wrap: false
+  wrap: flase
 
 
 # Creative Commons 4.0 International License.
@@ -241,7 +243,7 @@ sidebar:
   offset_float: 0
 
   # Back to top in sidebar
-  b2t: false
+  b2t: true
 
   # Scroll percent label in b2t button
   scrollpercent: false
@@ -263,7 +265,7 @@ sidebar:
 scroll_to_more: true
 
 # Automatically saving scroll position on each post/page in cookies.
-save_scroll: false
+save_scroll: true
 
 # Automatically excerpt description in homepage as preamble text.
 excerpt_description: true
@@ -271,14 +273,14 @@ excerpt_description: true
 # Automatically Excerpt. Not recommend.
 # Please use <!-- more --> in the post to control excerpt accurately.
 auto_excerpt:
-  enable: false
+  enable: true
   length: 150
 
 # Post meta display settings
 post_meta:
   item_text: true
   created_at: true
-  updated_at: false
+  updated_at: true
   categories: true
 
 # Post wordcount display settings
@@ -296,7 +298,7 @@ post_wordcount:
 
 # Declare license on posts
 post_copyright:
-  enable: false
+  enable: true
   license: CC BY-NC-SA 3.0
   license_url: https://creativecommons.org/licenses/by-nc-sa/3.0/
 
@@ -329,12 +331,12 @@ highlight_theme: normal
 
 # MathJax Support
 mathjax:
-  enable: false
-  per_page: false
+  enable: true
+  per_page: true
   cdn: //cdn.bootcss.com/mathjax/2.7.1/latest.js?config=TeX-AMS-MML_HTMLorMML
 
 # Han Support docs: https://hanzi.pro/
-han: false
+han: true
 
 # Swiftype Search API Key
 #swiftype_key:

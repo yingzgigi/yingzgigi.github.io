@@ -1,0 +1,134 @@
+<?xml version="1.0" encoding="utf-8"?><feed xmlns="http://www.w3.org/2005/Atom" ><generator uri="https://jekyllrb.com/" version="3.8.5">Jekyll</generator><link href="http://localhost:4000/atom.xml" rel="self" type="application/atom+xml" /><link href="http://localhost:4000/" rel="alternate" type="text/html" /><updated>2019-05-31T02:57:51+02:00</updated><id>http://localhost:4000/atom.xml</id><title type="html">weekly review</title><subtitle>github pages</subtitle><author><name>yingzgigi</name></author><entry><title type="html">从语音到文本的end-to-end翻译</title><link href="http://localhost:4000/%E8%AE%BA%E6%96%87notes/2019/05/27/proof-of-concept-end2end/" rel="alternate" type="text/html" title="从语音到文本的end-to-end翻译" /><published>2019-05-27T00:00:00+02:00</published><updated>2019-05-27T00:00:00+02:00</updated><id>http://localhost:4000/%E8%AE%BA%E6%96%87notes/2019/05/27/proof-of-concept-end2end</id><content type="html" xml:base="http://localhost:4000/%E8%AE%BA%E6%96%87notes/2019/05/27/proof-of-concept-end2end/">&lt;h2 id=&quot;listen-and-translate-a-proof-of-concept-for-end-to-end-speech-to-text-translation-2016&quot;&gt;[LISTEN AND TRANSLATE: A PROOF OF CONCEPT FOR END-TO-END SPEECH-TO-TEXT TRANSLATION] 2016&lt;/h2&gt;
+
+&lt;blockquote&gt;
+  &lt;p&gt;End-to-end speech translation. Def. : the direct translation of an audio signal without intermediate transcription steps.&lt;/p&gt;
+&lt;/blockquote&gt;
+
+&lt;p&gt;现在的语音翻译系统整合使用两个主要模型：source language speech recognition（ASR）和 source-to-target text （MT）。在这些方法里，源语言的text transcript（sequence或者graph）用于生成目标语言的text hypothesis。&lt;/p&gt;
+
+&lt;p&gt;当时的“encoder-decoder”结构是一种把输入信号的序列投射到连续的低维空间里并且从而生成输出序列。如果不考虑从源语音序列直接翻译到目标词序列或者从平行phone-word序列发现双语语料库，那么从源语音信号到目标语言文本的直接翻译的唯一尝试是Duong的源语音发音和它们的文本翻译之间的校准，以及Anastasopoulos提出用IBM Model 2和dynamic time warping(DTW)来校准源语音和目标文本，但当时Duong及另一论文都没有提出完整的end-to-end翻译系统。&lt;/p&gt;
+
+&lt;p&gt;这篇论文首次尝试建立一个end-to-end speech-to-text translation system，并且在学习或者解码过程中不使用源语言文本。减少对源语言转录的需求可以改变语言翻译时的数据收集方式，从收集speech transcription变成双语者看到目标语言文本的表达然后直接以源语言说话。&lt;/p&gt;
+
+&lt;h3 id=&quot;model&quot;&gt;Model&lt;/h3&gt;
+
+&lt;p&gt;比较两个end-to-end模型：标准机器翻译和语音翻译（都使用了attention-based encoder-decoder神经网络）。&lt;/p&gt;
+
+&lt;p&gt;输入序列(&lt;script type=&quot;math/tex&quot;&gt;x_1, ..., x_A&lt;/script&gt;), 多层双向的LSTM的encoder生成输出序列h=(&lt;script type=&quot;math/tex&quot;&gt;h_1, ..., h_A&lt;/script&gt;). decoder初始状态&lt;script type=&quot;math/tex&quot;&gt;s_0 = tanh(W_{init} s^{'}_A)&lt;/script&gt;, &lt;script type=&quot;math/tex&quot;&gt;s^{'}_A&lt;/script&gt;是encoder最后一个状态。decoder的下一个状态是&lt;/p&gt;
+
+&lt;script type=&quot;math/tex; mode=display&quot;&gt;s_t, o_t = LSTM(s_{t-1}, E_{z_{t-1}})&lt;/script&gt;
+
+&lt;p&gt;&lt;script type=&quot;math/tex&quot;&gt;s_t&lt;/script&gt;是LSTM的新状态，&lt;script type=&quot;math/tex&quot;&gt;o_t&lt;/script&gt;是输出。在训练时，&lt;script type=&quot;math/tex&quot;&gt;z_{t-1}&lt;/script&gt;是目标序列reference中的前一个标记；评估时，&lt;script type=&quot;math/tex&quot;&gt;z_{t-1}&lt;/script&gt;是前一个time-step的预测标记。E是目标嵌入矩阵。&lt;/p&gt;
+
+&lt;p&gt;与LSTM的输出&lt;script type=&quot;math/tex&quot;&gt;o_t&lt;/script&gt;级联的attention vector &lt;script type=&quot;math/tex&quot;&gt;d_t&lt;/script&gt;&lt;/p&gt;
+
+&lt;script type=&quot;math/tex; mode=display&quot;&gt;d_t = attention(h, s_t)&lt;/script&gt;
+
+&lt;p&gt;this vector is mapped to a vector of the same size as the target vocabulary,&lt;/p&gt;
+
+&lt;script type=&quot;math/tex; mode=display&quot;&gt;y_t = W_{proj}(o_t \bigoplus d_t) + b_{proj}&lt;/script&gt;
+
+&lt;p&gt;to compute a probability distribution over all target words&lt;/p&gt;
+
+&lt;script type=&quot;math/tex; mode=display&quot;&gt;p(w_t|y_{t-1}, s_{t-1}) = softmax(W_{out} y_t + b_{out})&lt;/script&gt;
+
+&lt;p&gt;每个time-step greedy decoder（每次只选最可能的那一个词）选取概率最大时的&lt;script type=&quot;math/tex&quot;&gt;w_t&lt;/script&gt;。&lt;/p&gt;
+
+&lt;p&gt;在文本输入时用了注意力机制（attention mechanism）
+&lt;script type=&quot;math/tex&quot;&gt;attention(h, s_t) = \sum{a_i^t h_i}&lt;/script&gt;
+&lt;script type=&quot;math/tex&quot;&gt;a_i^t = softmax(u_i^t)&lt;/script&gt;
+&lt;script type=&quot;math/tex&quot;&gt;u_i^t = v^T tanh(W_1 h_i + W_2 s_t + b_2)&lt;/script&gt;&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;\assets\images\postsimage\0528\alignments_performance.jpg&quot; alt=&quot;example of alignment performed by the attention mechanism during training&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;为了能在语音输入时让attention model记住并且不重复翻译同一部分信号，用了卷积注意力模型（convolutional attention），用convolutional filter来记录前一个time-step的attention weights。这个对于输入语音序列特别长的时候特别有用。&lt;/p&gt;
+
+&lt;h3 id=&quot;experiments&quot;&gt;Experiments&lt;/h3&gt;
+
+&lt;p&gt;他们生成了一种有语音合成的语音翻译语料库，使用小型平行语料库French-English BTEC corpus。因为这两个语种有相似的语序（SVO-SVO主动宾）。&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;\assets\images\postsimage\0528\results_text_translation.jpg&quot; alt=&quot;Results of machine translation experiments&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;\assets\images\postsimage\0528\results_speech_translation.jpg&quot; alt=&quot;Results of speech translation experiments&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;语音文本转换模型比机器翻译模型表现差一点。&lt;/p&gt;
+
+&lt;h3 id=&quot;conclusion&quot;&gt;Conclusion&lt;/h3&gt;
+
+&lt;p&gt;这篇论文提出的end-to-end语音翻译模型的结果建立在小型法-英合成语料库，首次证明了在不使用源语言的情况下进行端到端语音到文本翻译的可能性。&lt;/p&gt;</content><author><name>yingzgigi</name></author><category term="论文notes" /><category term="speech translation" /><category term="NMT" /><summary type="html">[LISTEN AND TRANSLATE: A PROOF OF CONCEPT FOR END-TO-END SPEECH-TO-TEXT TRANSLATION] 2016 End-to-end speech translation. Def. : the direct translation of an audio signal without intermediate transcription steps. 现在的语音翻译系统整合使用两个主要模型：source language speech recognition（ASR）和 source-to-target text （MT）。在这些方法里，源语言的text transcript（sequence或者graph）用于生成目标语言的text hypothesis。 当时的“encoder-decoder”结构是一种把输入信号的序列投射到连续的低维空间里并且从而生成输出序列。如果不考虑从源语音序列直接翻译到目标词序列或者从平行phone-word序列发现双语语料库，那么从源语音信号到目标语言文本的直接翻译的唯一尝试是Duong的源语音发音和它们的文本翻译之间的校准，以及Anastasopoulos提出用IBM Model 2和dynamic time warping(DTW)来校准源语音和目标文本，但当时Duong及另一论文都没有提出完整的end-to-end翻译系统。 这篇论文首次尝试建立一个end-to-end speech-to-text translation system，并且在学习或者解码过程中不使用源语言文本。减少对源语言转录的需求可以改变语言翻译时的数据收集方式，从收集speech transcription变成双语者看到目标语言文本的表达然后直接以源语言说话。 Model 比较两个end-to-end模型：标准机器翻译和语音翻译（都使用了attention-based encoder-decoder神经网络）。 输入序列(), 多层双向的LSTM的encoder生成输出序列h=(). decoder初始状态, 是encoder最后一个状态。decoder的下一个状态是 是LSTM的新状态，是输出。在训练时，是目标序列reference中的前一个标记；评估时，是前一个time-step的预测标记。E是目标嵌入矩阵。 与LSTM的输出级联的attention vector this vector is mapped to a vector of the same size as the target vocabulary, to compute a probability distribution over all target words 每个time-step greedy decoder（每次只选最可能的那一个词）选取概率最大时的。 在文本输入时用了注意力机制（attention mechanism） 为了能在语音输入时让attention model记住并且不重复翻译同一部分信号，用了卷积注意力模型（convolutional attention），用convolutional filter来记录前一个time-step的attention weights。这个对于输入语音序列特别长的时候特别有用。 Experiments 他们生成了一种有语音合成的语音翻译语料库，使用小型平行语料库French-English BTEC corpus。因为这两个语种有相似的语序（SVO-SVO主动宾）。 语音文本转换模型比机器翻译模型表现差一点。 Conclusion 这篇论文提出的end-to-end语音翻译模型的结果建立在小型法-英合成语料库，首次证明了在不使用源语言的情况下进行端到端语音到文本翻译的可能性。</summary></entry><entry><title type="html">Launches Site</title><link href="http://localhost:4000/2019/05/16/first-time-to-post/" rel="alternate" type="text/html" title="Launches Site" /><published>2019-05-16T00:00:00+02:00</published><updated>2019-05-16T00:00:00+02:00</updated><id>http://localhost:4000/2019/05/16/first-time-to-post</id><content type="html" xml:base="http://localhost:4000/2019/05/16/first-time-to-post/">&lt;p&gt;something still wrong?&lt;/p&gt;</content><author><name>yingzgigi</name></author><summary type="html">something still wrong?</summary></entry><entry><title type="html">关于light weight和dynamic convolution</title><link href="http://localhost:4000/%E8%AE%BA%E6%96%87notes/2019/05/16/pla-with-lightweight-dynconv/" rel="alternate" type="text/html" title="关于light weight和dynamic convolution" /><published>2019-05-16T00:00:00+02:00</published><updated>2019-05-16T00:00:00+02:00</updated><id>http://localhost:4000/%E8%AE%BA%E6%96%87notes/2019/05/16/pla-with-lightweight-dynconv</id><content type="html" xml:base="http://localhost:4000/%E8%AE%BA%E6%96%87notes/2019/05/16/pla-with-lightweight-dynconv/">&lt;ul&gt;
+  &lt;li&gt;
+    &lt;p&gt;[PAY LESS ATTENTION WITH LIGHTWEIGHT AND DYNAMIC CONVOLUTGIONS]&lt;/p&gt;
+
+    &lt;p&gt;这篇论文关注通过lightweight convolutions和dynamica convolutions来解决MT中较长序列问题，降低网络参数，提升训练速度。&lt;/p&gt;
+
+    &lt;ul&gt;
+      &lt;li&gt;
+        &lt;p&gt;Transformer&lt;/p&gt;
+
+        &lt;p&gt;&lt;img src=&quot;/assets/images/postsimage/transformer.png&quot; alt=&quot;Transformer&quot; /&gt;&lt;/p&gt;
+
+        &lt;p&gt;&lt;!-- &lt;img src=&quot;https://github.com/yingzgigi/yingzgigi.github.io/blob/master/_posts/postsimage/transformer.png&quot; alt=&quot;Transformer&quot; title=&quot;Transformer&quot; width=&quot;50&quot; height=&quot;50&quot; /&gt; --&gt;&lt;/p&gt;
+
+        &lt;p&gt;Transformer可以用来解决自然语言不定长问题，跟CNN类似，设定输入的最大长度，用Padding填充不够的部分，使模型输入定长。Transformer为了保留输入句子单词之间的相对位置信息，用位置函数进行位置编码，在输入端输入位置信息。Transformer的第一层是Multi-head self attention。&lt;/p&gt;
+      &lt;/li&gt;
+      &lt;li&gt;
+        &lt;p&gt;Self Attention&lt;/p&gt;
+
+        &lt;p&gt;&lt;img src=&quot;/assets/images/postsimage/self attention.jpg&quot; alt=&quot;Self Attention&quot; /&gt;&lt;/p&gt;
+
+        &lt;p&gt;&lt;!-- &lt;img src=&quot;https://github.com/yingzgigi/yingzgigi.github.io/blob/master/_posts/postsimage/self%20attention.jpg&quot; alt=&quot;Self Attention&quot; title=&quot;Self Attention&quot; width=&quot;50&quot; height=&quot;50&quot; /&gt; --&gt;&lt;/p&gt;
+
+        &lt;p&gt;Self Attention 会让当前输入单词和句子中任意单词发生关系，然后集成到一个embedding向量里，因为这个特性self attention可以解决NLP句子中长距离依赖特征问题。相比较，RNN需要通过隐层节点往后传，CNN需要通过增加网络深度来捕获远距离特征。&lt;/p&gt;
+      &lt;/li&gt;
+      &lt;li&gt;
+        &lt;p&gt;Lightweight Convolution&lt;/p&gt;
+      &lt;/li&gt;
+      &lt;li&gt;
+        &lt;p&gt;Dynamic Convolution&lt;/p&gt;
+      &lt;/li&gt;
+      &lt;li&gt;
+        &lt;p&gt;Experiment&lt;/p&gt;
+      &lt;/li&gt;
+      &lt;li&gt;
+        &lt;p&gt;Results&lt;/p&gt;
+      &lt;/li&gt;
+      &lt;li&gt;
+        &lt;p&gt;Conclustion&lt;/p&gt;
+      &lt;/li&gt;
+    &lt;/ul&gt;
+  &lt;/li&gt;
+&lt;/ul&gt;</content><author><name>yingzgigi</name></author><category term="论文notes" /><category term="NMT" /><summary type="html">[PAY LESS ATTENTION WITH LIGHTWEIGHT AND DYNAMIC CONVOLUTGIONS] 这篇论文关注通过lightweight convolutions和dynamica convolutions来解决MT中较长序列问题，降低网络参数，提升训练速度。 Transformer Transformer可以用来解决自然语言不定长问题，跟CNN类似，设定输入的最大长度，用Padding填充不够的部分，使模型输入定长。Transformer为了保留输入句子单词之间的相对位置信息，用位置函数进行位置编码，在输入端输入位置信息。Transformer的第一层是Multi-head self attention。 Self Attention Self Attention 会让当前输入单词和句子中任意单词发生关系，然后集成到一个embedding向量里，因为这个特性self attention可以解决NLP句子中长距离依赖特征问题。相比较，RNN需要通过隐层节点往后传，CNN需要通过增加网络深度来捕获远距离特征。 Lightweight Convolution Dynamic Convolution Experiment Results Conclustion</summary></entry><entry><title type="html">Windows的Linux子系统：bash打开application的图形界面</title><link href="http://localhost:4000/%E8%AE%B0%E5%BD%95/2019/05/16/Windows-Subsystem-bash-open/" rel="alternate" type="text/html" title="Windows的Linux子系统：bash打开application的图形界面" /><published>2019-05-16T00:00:00+02:00</published><updated>2019-05-16T00:00:00+02:00</updated><id>http://localhost:4000/%E8%AE%B0%E5%BD%95/2019/05/16/Windows-Subsystem-bash-open</id><content type="html" xml:base="http://localhost:4000/%E8%AE%B0%E5%BD%95/2019/05/16/Windows-Subsystem-bash-open/">&lt;p&gt;因为想要用linux环境下的LaTex，所以需要texmaker的图形界面。在没有配置前的ubuntu子系统只有terminal。然后整理了一下步骤：&lt;/p&gt;
+
+&lt;ol&gt;
+  &lt;li&gt;
+    &lt;p&gt;安装VcXsrv: https://sourceforge.net/projects/vcxsrv/files/latest/download&lt;/p&gt;
+  &lt;/li&gt;
+  &lt;li&gt;
+    &lt;p&gt;运行XLaunch&lt;/p&gt;
+
+    &lt;p&gt;&lt;strong&gt;bash中运行texmaker就可以在VcXsrv中打开界面码字了&lt;/strong&gt;&lt;/p&gt;
+
+    &lt;p&gt;&lt;em&gt;然后关于不是很需要的Unity桌面：&lt;/em&gt;&lt;/p&gt;
+  &lt;/li&gt;
+  &lt;li&gt;
+    &lt;p&gt;bash输入：&lt;/p&gt;
+    &lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt; sudo apt-get install ubuntu-desktop unity compizconfig-settings-manager
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;    &lt;/div&gt;
+
+    &lt;p&gt;打开ccsm&lt;/p&gt;
+
+    &lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt; ccsm
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;    &lt;/div&gt;
+
+    &lt;p&gt;然后再VcXsrv Server勾选需要的模块，close。&lt;/p&gt;
+
+    &lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt; echo &quot;export DISPLAY=:0.0&quot; &amp;gt;&amp;gt; ~/.bashrc
+ sudo sed -i 's$&amp;lt;listen&amp;gt;.*&amp;lt;/listen&amp;gt;$&amp;lt;listen&amp;gt;tcp:host=localhost,port=0&amp;lt;/listen&amp;gt;$' /etc/dbus-1/session.conf
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;    &lt;/div&gt;
+
+    &lt;p&gt;启动Unity桌面&lt;/p&gt;
+
+    &lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt; compiz
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;    &lt;/div&gt;
+  &lt;/li&gt;
+&lt;/ol&gt;</content><author><name>yingzgigi</name></author><category term="记录" /><category term="linux" /><summary type="html">因为想要用linux环境下的LaTex，所以需要texmaker的图形界面。在没有配置前的ubuntu子系统只有terminal。然后整理了一下步骤： 安装VcXsrv: https://sourceforge.net/projects/vcxsrv/files/latest/download 运行XLaunch bash中运行texmaker就可以在VcXsrv中打开界面码字了 然后关于不是很需要的Unity桌面： bash输入： sudo apt-get install ubuntu-desktop unity compizconfig-settings-manager 打开ccsm ccsm 然后再VcXsrv Server勾选需要的模块，close。 echo &quot;export DISPLAY=:0.0&quot; &amp;gt;&amp;gt; ~/.bashrc sudo sed -i 's$&amp;lt;listen&amp;gt;.*&amp;lt;/listen&amp;gt;$&amp;lt;listen&amp;gt;tcp:host=localhost,port=0&amp;lt;/listen&amp;gt;$' /etc/dbus-1/session.conf 启动Unity桌面 compiz</summary></entry></feed>
