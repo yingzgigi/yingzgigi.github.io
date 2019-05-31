@@ -1,16 +1,17 @@
 
 title: weekly review
+subtitle: yingzhi's blog
 
 author: yingzgigi
 
-languag: en
+languag: en, zh-Hans
 # Support language: de, en, fr-FR, id, ja, ko, pt-BR, pt, ru, zh-Hans, zh-hk, zh-tw
 date_format: '%Y-%m-%d'
 
 
-permalink: pretty
+permalink: /:year/:month/:day/:title/
 
-paginate: 10
+paginate: 20
 
 exclude: [".rvmrc", ".rbenv-version", "README.md", "Rakefile", "changelog.md", "Gemfile", "Gemfile.lock", "README_en.md", "vendor"]
 
@@ -29,6 +30,7 @@ defaults:
       type: "posts"
     values:
       layout: "post"
+      comments: true
 
 
 feed:
@@ -42,7 +44,7 @@ plugins:
 
 favicon: /assets/favicon.ico
 
-keywords: "Jekyll, NexT"
+keywords: "Jekyll, NexT, yingzhi"
 
 # ---------------------------------------------------------------
 # Jekyll & Global Configuration
@@ -56,7 +58,7 @@ keywords: "Jekyll, NexT"
 rss:
 
 # Specify the date when the site was setup
-#since: 2015
+since: 2019
 
 # icon between year and author @Footer
 authoricon: heart
@@ -233,9 +235,9 @@ sidebar:
   #  - always  expand for all pages automatically
   #  - hide    expand only when click on the sidebar toggle icon.
   #  - remove  Totally remove sidebar including sidebar toggle.
-  display: post
+  #display: post
   #display: always
-  #display: hide
+  display: hide
   #display: remove
 
   # Sidebar offset from top menubar in pixels.
@@ -243,7 +245,7 @@ sidebar:
   offset_float: 0
 
   # Back to top in sidebar
-  b2t: true
+  b2t: false
 
   # Scroll percent label in b2t button
   scrollpercent: false
