@@ -1,8 +1,8 @@
 ---
 layout: post
-title: "散记"
+title: "some notes for sequence model"
 date: 2019-05-27
-category: 论文notes
+category: 散记
 tags: 
     - sequence model
     - RNN
