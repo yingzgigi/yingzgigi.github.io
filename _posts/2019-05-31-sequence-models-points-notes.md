@@ -9,13 +9,13 @@ tags:
     - LSTM
 ---
 
-##sequenc model##
+## sequenc model ##
 input x or output y are sequence which could have different length. These problems regards as supervised learning which use label data (x,y) as training set.
 
 Notation:
 ![Notation](\assets\images\postsimage\0531\sequence_model.jpg)
 
-##RNN##
+## RNN ##
 
 RNN vs. Standard NN
 Standard network has problems:
@@ -27,7 +27,7 @@ Standard NN输入如果是10,000维的one-hot向量，如果总的输入大小�
 
 ![RNN Unit](\assets\images\postsimage\0531\RNN.png)
 
-##GRU##
+## GRU ##
 
 gated recurrent unit
 
@@ -37,7 +37,7 @@ gated recurrent unit
 
 <https://colah.github.io/posts/2015-08-Understanding-LSTMs/>
 
-##Embedding Matrix##
+## Embedding Matrix ##
 
 ![embedding matrix](\assets\images\postsimage\0531\embedding_matrix.jpg)
 
