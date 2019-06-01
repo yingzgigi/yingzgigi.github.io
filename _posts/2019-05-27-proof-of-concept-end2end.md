@@ -8,7 +8,7 @@ tags:
     - NMT
 ---
 
-## [LISTEN AND TRANSLATE: A PROOF OF CONCEPT FOR END-TO-END SPEECH-TO-TEXT TRANSLATION] 2016 ##
+## [LISTEN AND TRANSLATE: A PROOF OF CONCEPT FOR END-TO-END SPEECH-TO-TEXT TRANSLATION] 2016 Berard et al. ##
 
 >End-to-end speech translation. Def. : the direct translation of an audio signal without intermediate transcription steps.
 
