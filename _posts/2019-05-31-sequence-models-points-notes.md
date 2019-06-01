@@ -33,7 +33,7 @@ gated recurrent unit
 
 通过门决定这个时间点上要不要更新某个记忆细胞。比RNN更好捕捉长范围的依赖。
 
-##LSTM##
+## LSTM ##
 
 <https://colah.github.io/posts/2015-08-Understanding-LSTMs/>
 
