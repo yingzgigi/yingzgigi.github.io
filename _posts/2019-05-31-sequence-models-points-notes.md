@@ -42,3 +42,11 @@ gated recurrent unit
 ![embedding matrix](\assets\images\postsimage\0531\embedding_matrix.jpg)
 
 矩阵E包含了词汇表中所有单词的嵌入向量。实际比如Keras有嵌入层，不用对矩阵进行很慢很复杂的乘法运算就可以提取出需要的列。
+
+## Beam Search ##
+
+集束搜索考虑多个选择，参数B集束宽beam width，如果B为3，那么一次搜索考虑3个最可能的结果，然后存储以便后用。个第一个单词的最可能的选择。为了执行集束搜索的第一步，输入法语句子（Fr-En）到编码网络，然后会解码这个网络，softmax层输出10,000个概率值，得到这 10,000个输出的概率值，取前三个存起来。后面求概率步骤如图。
+
+![beam search](\assets\images\postsimage\0531\beam_search.jpg)
+
+![beam search steps](\assets\images\postsimage\0531\beam_search2.jpg)
