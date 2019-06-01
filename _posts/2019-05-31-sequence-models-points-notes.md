@@ -25,7 +25,7 @@ Standard network has problems:
 Standard NN输入如果是10,000维的one-hot向量，如果总的输入大小是最大单词数乘以10,000，那么第一层的权重矩阵就会有巨量的参数。循环神经网络就没有这两个问题。
 普通RNN的一个限制是它在某一个时刻的预测仅使用了从序列之前的输入信息并没有使用序列中后部的信息，所以有双向循环神经网络BRNN来解决。
 
-![RNN Unit](\assets\images\postsimage\0531\sequence_model.png)
+![RNN Unit](\assets\images\postsimage\0531\RNN.png)
 
 ##GRU##
 
