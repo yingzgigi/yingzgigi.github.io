@@ -1,7 +1,7 @@
 ---
 layout: post
 title: "some notes for sequence model"
-date: 2019-05-27
+date: 2019-05-31
 category: 散记
 tags: 
     - sequence model
