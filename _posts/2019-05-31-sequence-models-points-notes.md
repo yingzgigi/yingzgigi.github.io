@@ -7,6 +7,8 @@ tags:
     - sequence model
     - RNN
     - LSTM
+    - Beam Search
+    - BLEU
 ---
 
 ## sequenc model ##
@@ -50,3 +52,12 @@ gated recurrent unit
 ![beam search](\assets\images\postsimage\0531\beam_search.jpg)
 
 ![beam search steps](\assets\images\postsimage\0531\beam_search2.jpg)
+
+## BLEU Score ##
+
+biligual evaluation understudy双语评估替补，给定一个机器生成的翻译，它能够自动地计算一个分数来衡量MT的好坏。d得分越高说明与reference越接近。如果MT system实际上输出了比人工翻译结果更长的翻译，那么它就等于 1，其他情
+况下就是像这样的公式，惩罚所有更短的翻译。
+
+参考论文： Papineni, Kishore & Roukos, Salim & Ward, Todd & Zhu, Wei-jing. (2002). BLEU: a Method for Automatic Evaluation of Machine Translation.
+
+![bleu](\assets\images\postsimage\0531\bleu.jpg)

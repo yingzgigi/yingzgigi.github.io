@@ -2,7 +2,7 @@
 layout: post
 title: "Seq2Seq结构"
 date: 2019-06-01
-category: 散记
+category: 论文notes
 tags: 
     - Seq2Seq
     - NMT
@@ -19,3 +19,4 @@ tags:
 
 ![encoder-decoder](/assets/images/postsimage/0601/encoder-decoder.jpg)
 
+encoder network是一个RNN结构，RNN unit可以是GRU或者LSTM。每次向该网络输入一个法语单词（Fr-En），输入序列接收完毕后，RNN输出一个向量代表输入序列，decoder network以encoder的输出为输入，训练后每次输出得到一个翻译后的单词，直到输出序列的句子结尾标记。每次生成的标记传递到下一个单元进行预测。
