@@ -26,7 +26,9 @@ tags:
 
 $$s_t, o_t = LSTM(s_{t-1}, E_{z_{t-1}})$$
 
-$$s_t$$是LSTM的新状态，$$o_t$$是输出。在训练时，$$z_{t-1}$$是目标序列reference中的前一个标记；评估时，$$z_{t-1}$$是前一个time-step的预测标记。E是目标嵌入矩阵。
+$$s_t$$是LSTM的新状态，$$o_t$$是输出。在训练时，$$z_{t-1}$$是目标序列reference中的前一个标记；评估时，$$z_{t-1}$$是预测的前一个time-step的标记。E是目标嵌入矩阵。
+
+LSTM图如Seq2Seq那篇论文。decoder部分的关键是训练training和评估evaluation（predicting）是分开进行的但是共享参数，也就是说先用training得到的参数用于predicting。training时使用embedding后的target数据作为LSTM单元的输入;evaluation时使用前一个predicting的结果作为输入，没有target数据，只有t-1时的cell state和输出o。
 
 与LSTM的输出$$o_t$$级联的attention vector $$d_t$$
  
