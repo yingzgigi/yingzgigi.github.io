@@ -9,6 +9,8 @@ tags:
     - NMT
 ---
 
+point：语音到文本直接翻译的最早想法概述。
+
 ## [LISTEN AND TRANSLATE: A PROOF OF CONCEPT FOR END-TO-END SPEECH-TO-TEXT TRANSLATION] 2016 Berard et al. ##
 
 >End-to-end speech translation. Def. : the direct translation of an audio signal without intermediate transcription steps.

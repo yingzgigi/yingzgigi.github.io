@@ -11,6 +11,8 @@ tags:
     - align
 ---
 
+point：提出注意力机制，attention mechanism的开篇之作。
+
 ## [NEURAL MACHINE TRANSLATION BY JOINTLY LEARNING TO ALIGN AND TRANSLATE] 2015 Bahdanau et al. ##
 
 NMT旨在建立一个可以同时调整并最大化翻译性能的神经网络。一般用的encoder-decoder模型把不同长度的源语言句子encode后得到固定长度的向量，这样对NMT来说不能提高performance。所以用一个能自动对与预测某个target word相关的部分语句soft search的模型，而不用form这部分as a hard segement explicitly（就是硬性细分）。也就是soft alignment。

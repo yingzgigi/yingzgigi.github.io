@@ -11,6 +11,8 @@ tags:
     - BLEU
 ---
 
+point:序列模型，循环神经网络，长短期记忆，束搜索，BLEU评分
+
 ## sequenc model ##
 input x or output y are sequence which could have different length. These problems regards as supervised learning which use label data (x,y) as training set.
 
