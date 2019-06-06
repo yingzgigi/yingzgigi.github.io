@@ -22,15 +22,15 @@ tags:
 
 比较两个end-to-end模型：标准机器翻译和语音翻译（都使用了attention-based encoder-decoder神经网络）。
  
-输入序列($$x_1, ..., x_A$$), 多层双向的LSTM的encoder生成输出序列h=($$h_1, ..., h_A$$). decoder初始状态$$s_0 = tanh(W_{init} s^{'}_A)$$, $$s^{'}_A$$是encoder最后一个状态。decoder的下一个状态是
+输入序列($x_1, ..., x_A$), 多层双向的LSTM的encoder生成输出序列h=($h_1, ..., h_A$). decoder初始状态$s_0 = tanh(W_{init} s^{'}_A)$, $s^{'}_A$是encoder最后一个状态。decoder的下一个状态是
 
 $$s_t, o_t = LSTM(s_{t-1}, E_{z_{t-1}})$$
 
-$$s_t$$是LSTM的新状态，$$o_t$$是输出。在训练时，$$z_{t-1}$$是目标序列reference中的前一个标记；评估时，$$z_{t-1}$$是预测的前一个time-step的标记。E是目标嵌入矩阵，用于word embedding。(在encoder部分也有embedding layer，which represent word using 1-hot encoding。represent word in continuous vector用小维度学习语言模型来找到词的相似性，自动学习描述该词的特征。)
+$s_t$是LSTM的新状态，$o_t$是输出。在训练时，$z_{t-1}$是目标序列reference中的前一个标记；评估时，$z_{t-1}$是预测的前一个time-step的标记。E是目标嵌入矩阵，用于word embedding。(在encoder部分也有embedding layer，which represent word using 1-hot encoding。represent word in continuous vector用小维度学习语言模型来找到词的相似性，自动学习描述该词的特征。)
 
 LSTM图如Seq2Seq那篇论文。decoder部分的关键是训练training和评估evaluation（predicting）是分开进行的但是共享参数，也就是说先用training得到的参数用于predicting。training时使用embedding后的target数据作为LSTM单元的输入;evaluation时使用前一个predicting的结果作为输入，没有target数据，只有t-1时的cell state和输出o。
 
-与LSTM的输出$$o_t$$级联的attention vector $$d_t$$
+与LSTM的输出$$o_t$$级联的attention vector $d_t$
  
 $$d_t = attention(h, s_t)$$
 
@@ -42,7 +42,7 @@ to compute a probability distribution over all target words
 
 $$p(w_t|y_{t-1}, s_{t-1}) = softmax(W_{out} y_t + b_{out})$$
 
-每个time-step greedy decoder（每次只选最可能的那一个词）选取概率最大时的$$w_t$$。
+每个time-step greedy decoder（每次只选最可能的那一个词）选取概率最大时的$w_t$。
 
 在文本输入时用了注意力机制（attention mechanism）
 $$attention(h, s_t) = \sum{a_i^t h_i}$$
