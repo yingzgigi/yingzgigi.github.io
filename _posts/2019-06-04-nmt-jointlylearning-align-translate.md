@@ -1,8 +1,9 @@
 ---
 layout: post
-title: "NMT对encoder-decoder的扩展：align和translate"
-date: 2019-05-27
+title: "NMT对encoder-decoder的扩展：联合align和translate"
+date: 2019-06-04
 category: 论文notes
+mathjax: true
 tags: 
     - NMT
 ---
