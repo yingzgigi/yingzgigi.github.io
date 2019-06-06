@@ -3,6 +3,7 @@ layout: post
 title: "从语音到文本的end-to-end翻译"
 date: 2019-05-27
 category: 论文notes
+mathjax: true
 tags: 
     - speech translation
     - NMT
