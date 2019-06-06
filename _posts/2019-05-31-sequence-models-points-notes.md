@@ -43,7 +43,7 @@ gated recurrent unit
 
 ![embedding matrix](\assets\images\postsimage\0531\embedding_matrix.jpg)
 
-矩阵E包含了词汇表中所有单词的嵌入向量。实际比如Keras有嵌入层，不用对矩阵进行很慢很复杂的乘法运算就可以提取出需要的列。
+矩阵E包含了词汇表中所有单词的嵌入向量。实际比如Keras有嵌入层，不用对矩阵进行很慢很复杂的乘法运算就可以提取出需要的列。用于找词的相似性。论文里的图用pca来展示每个词在空间的关联。
 
 ## Beam Search ##
 
