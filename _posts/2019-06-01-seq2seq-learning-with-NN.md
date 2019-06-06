@@ -9,6 +9,8 @@ tags:
     - speech translation
 ---
 
+point：Seq2Seq的NMT基本结构。
+
 ## [SEQUENCE TO SEQUENCE LEARNING WITH NEURAL NETWORKS] 2014 Stutskever et al. ##
 
 ### Sequence to sequence architecture: encoder network - decoder network
