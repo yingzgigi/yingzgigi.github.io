@@ -21,7 +21,7 @@ point: 这篇论文提出一种使用线性解析树的注意力机制模型。
 
 ![LSTM+A model](/assets/images/postsimage/0606/lstm+a.jpg)
 
-3层LSTM，每层256个LSTM单元。对encoder和decoder的使用不同的LSTM的参数。图里的XX是POS-tag normalization。part-of-speech，词类，指单词怎样聚类，因为这里在句法解析F1评分里不会被评估所以用XX代替。
+3层LSTM，每层256个LSTM单元（即hidden dimensionality是256）。对encoder和decoder的使用不同的LSTM的参数。图里的XX是POS-tag normalization。part-of-speech，词类，指单词怎样聚类，因为这里在句法解析F1评分里不会被评估所以用XX代替。
 
 图里最上层的灰色箭头是attention机制。
 
@@ -39,4 +39,12 @@ point: 这篇论文提出一种使用线性解析树的注意力机制模型。
 
 ![attention computing](/assets/images/postsimage/0606/attention_computing.jpg)
 
+v和W都是可以通过模型学习到的参数，u包含输入句子长度信息，第i个u包含了对第i个hidden encoder state的分数h即多少注意力分配给它，a是对u归一化后的attention mask，
+
 #### Linearizing Parsing Trees ####
+
+![linearizing](/assets/images/postsimage/0606/linearization.jpg)
+
+图里展示根据深度优先遍历顺序depth-first traversal order把parse tree线性化成一个序列。
+
+用上面的LSTM+A模型来解析的话，先把句子从左到右的顺序输入（这里逆序），保存生成的向量，然后输出基于这些向量信息的线性化后的parse tree。然后新的d’是跟d级联产生的新的hidden state，用它来预测以及回馈到循环模型的下一个time step。
