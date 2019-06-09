@@ -47,14 +47,14 @@ $$p(w_t|y_{t-1}, s_{t-1}) = softmax(W_{out} y_t + b_{out})$$
 
 每个time-step greedy decoder（每次只选最可能的那一个词）选取概率最大时的$w_t$。
 
-在文本输入时用了注意力机制（attention mechanism）
+在_文本输入_时用了注意力机制（attention mechanism）用的模型是Vinyals et al.(2015)Grammar那篇论文里的LSTM—+A模型中的attention部分。
 $$attention(h, s_t) = \sum{a_i^t h_i}$$
 $$a_i^t = softmax(u_i^t)$$
 $$u_i^t = v^T tanh(W_1 h_i + W_2 s_t + b_2)$$
 
 ![example of alignment performed by the attention mechanism during training](\assets\images\postsimage\0528\alignments_performance.jpg)
 
-为了能在语音输入时让attention model记住并且不重复翻译同一部分信号，用了卷积注意力模型（convolutional attention），用convolutional filter来记录前一个time-step的attention weights。这个对于输入语音序列特别长的时候特别有用。
+为了能在_语音输入_时让attention model记住并且不重复翻译同一部分信号，用了卷积注意力模型（convolutional attention），用convolutional filter来记录前一个time-step的attention weights。这个对于输入语音序列特别长的时候特别有用。
 
 ### Experiments
 
