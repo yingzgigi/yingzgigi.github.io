@@ -8,6 +8,7 @@ tags:
     - Grammar
     - attention model
     - LSTM
+    - parse tree
 ---
 
 point: 这篇论文提出一种使用线性解析树的注意力机制模型。
