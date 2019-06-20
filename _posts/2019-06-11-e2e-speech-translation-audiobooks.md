@@ -7,7 +7,9 @@ mathjax: true
 tags: 
     - Speech Translation
     - End-to-end model
-    - LibriSpeech
+    - pyramidal encoder
+    - character-level decoder
+    - multi-task
 ---
 
 point：
@@ -18,9 +20,9 @@ point：
 
 ### audiobooks corpus ###
 #### augmented LibriSpeech ####
+large sclae study（相比前一篇论文用的小型合成语料库）。
 
 #### 比较e2e直接翻译和结合MT和ASR翻译这两种方法 ####
-
 
 ### end-to-end models ###
 
@@ -28,10 +30,11 @@ point：
 
 #### Speech Encoder ####
 
-speech encoder使用一种混合模型，混合了Seq2Seq[Weiss, 2017]的卷积模型和PoC E2E[Berard, 2016]的encoder模型。这里的模型在LSTM层之间使用了time pooling，减少特征大小和时间长度，加快训练。最后结果输出短序列(pyramidal encoder金字塔形状)。
+speech encoder使用一种混合模型，混合了Seq2Seq[Weiss, 2017]的卷积模型和PoC E2E[Berard, 2016]的encoder模型。encoder部分一共有七层，前面2层用tanh处理输入的语音frame,得到的feature大小为n', 这两层处理方式类同他前一篇论文（2016）。然后通过2层convolutional layer，每层使用16个3x3的filter，第1层的depth是1，第2层的depth是16，步长为（2，2），所以每经过一层减少长度和大小，经过两层得到的就是$(T_x/4, n'/4, 16)$。 最后是三层LSTM层。在LSTM层之间使用了time pooling，即pyramidal encoder金字塔形状，减少特征大小和时间长度，加快训练。最后结果相比他的前一篇论文输出更短序列。
 
 #### Character-level decoder ####
 
-字符级decoder由一个卷积LSTM组成，由密度层dense layer。
+字符级别decoder由一个条件LSTM组成，然后全连接层dense layer。参考toolkit那篇论文和vanilla golbal注意力机制论文。在toolkit里面提到跟前面的2015Bahdanau的论文里相比较的update，look和generate分别有什么新的东西。并且这里亮点是生成器生成的字符是目标词库里分数最高的符号。
 
 ### 实验结果分析 ###
+实验结果说明他们提出的这个端到端直接翻译模型表现不如级联ASR和MT模型。2019April的语音到语音直接翻译模型更好，之后看。
