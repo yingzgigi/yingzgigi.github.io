@@ -23,11 +23,15 @@ point：
 
 
 ### end-to-end models ###
+
+这里使用的是multi-task training，也就是在任务过程中share部分模型，即ASR和AST使用相同的encoder结构，AST和MT使用相同的decoder结构。因为前两个语音输入需要用之前一篇论文的attention模型，后两者都是文本输出可以用同一个结构。
+
 #### Speech Encoder ####
 
-
+speech encoder使用一种混合模型，混合了Seq2Seq[Weiss, 2017]的卷积模型和PoC E2E[Berard, 2016]的encoder模型。这里的模型在LSTM层之间使用了time pooling，减少特征大小和时间长度，加快训练。最后结果输出短序列(pyramidal encoder金字塔形状)。
 
 #### Character-level decoder ####
 
+字符级decoder由一个卷积LSTM组成，由密度层dense layer。
 
 ### 实验结果分析 ###
