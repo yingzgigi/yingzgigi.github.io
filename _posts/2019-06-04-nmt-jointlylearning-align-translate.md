@@ -4,7 +4,7 @@ title: "NMT联合align和translate即attention由来"
 date: 2019-06-04
 category: 论文notes
 mathjax: true
-tags: 
+tags:
     - NMT
     - attention mechanism
     - BiRNN
